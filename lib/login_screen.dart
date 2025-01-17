@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(context: context, builder: (BuildContext context) {
         return  AlertDialog(
           title:  Text("Error"),
-          content:  Text("Invalid username or password"),
+          content:  Text("Invalid email or password"),
           actions: [
             TextButton(onPressed: () => Navigator.pop(context), child: Text("ok"))
           ]
