@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:integration/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,17 +11,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   final key = GlobalKey<FormState>();
 
   @override
   void dispose() {
     super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
+
+   void _login() {
+    if(_emailController.text == "email" && _passwordController.text == "password") {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } else {
+      showDialog(context: context, builder: (BuildContext context) {
+        return  AlertDialog(
+          title:  Text("Error"),
+          content:  Text("Invalid username or password"),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: Text("ok"))
+          ]
+        );
+      });
+    }
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: emailController,
+                  key: Key("email_controller"),
+                  controller: _emailController,
                   decoration: InputDecoration(
                     hintText: "Please enter your email",
                     label: const Text('Email'),
@@ -44,7 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                    controller: passwordController,
+                  key: Key("password_controller"),
+                    controller: _passwordController,
                     decoration: const InputDecoration(
                       label: Text("Password"),
                       hintText: "Please enter your password",
@@ -60,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: _login,
                   child: const Text("Login", style: TextStyle(color: Colors.white)),
                 ),
               ],
